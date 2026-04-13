@@ -5,6 +5,8 @@ const fastify = require('fastify')({
     }
   }
 })
+const dotenv = require("dotenv")
+dotenv.config()
 
 const session = require('@fastify/session')
 const cookie = require('@fastify/cookie')
@@ -20,7 +22,7 @@ connectDB()
 
 fastify.register(cookie)
 fastify.register(session, {
-  secret: 'a secret with minimum length of 32 characters',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
    cookie: {

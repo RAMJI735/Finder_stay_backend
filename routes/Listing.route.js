@@ -81,7 +81,7 @@ async function RoomRoute(fastify, options) {
         }
     });
 
-    fastify.get("/listings/:hotelId", { preHandler: authUser }, async (request, reply) => {
+    fastify.get("/listings/:hotelId", async (request, reply) => {
         try {
             const { hotelId } = request.params;
             if (!hotelId) {
@@ -112,10 +112,10 @@ async function RoomRoute(fastify, options) {
     });
 
 
-    fastify.get("/listing/:id", { preHandler: authUser }, async (request, reply) => {
+    fastify.get("/listing/:id",  async (request, reply) => {
         try {
             const { id } = request.params;
-            const data = await Room.findById(id).populate("hotel", "name city address");
+            const data = await Room.findById(id).populate("hotel", "name city address").populate("owner", "username email");
             if (!data) {
                 return ApiResponse(reply, {
                     statusCode: 404,
